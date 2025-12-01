@@ -53,10 +53,12 @@ def apply_transformation(jsx):
     modf = re.sub(r'\{(\w+)\}', r'{{ \1 }}', modf)
     modf = re.sub(
     r'\{(\w+)\.map\(\((\w+),\s*(\w+)\)\s*=>\s*\(',
-    r'<li *ngFor="let \2 of \1; index as \3">',
+    r'<li *ngFor="let \2 of \1">',
     modf
     )
+    
     modf = modf.replace("key={{ index }}", "")
+    modf = re.sub(r'value=\{\{?\s*(\w+)\s*\}?\}', r'[(ngModel)]="\1"', modf)
     modf = modf.replace('))}', '') 
     modf = modf.replace(">)", ">").replace(") <", "<")
     return modf
